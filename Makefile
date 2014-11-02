@@ -1,25 +1,13 @@
-OUTDIR:=bin/
-LIBDIR:=$(OUTDIR)lib/
-INCDIR:=$(OUTDIR)include/
+include .knightos/variables.make
 
-all: package
+ALL_TARGETS:=$(LIB)fx3dlib $(INCLUDE)fx3dlib.inc
 
-package: $(LIBDIR)fx3d $(INCDIR)fx3dlib.inc
-	kpack fx3dlib-1.0.0.pkg $(OUTDIR)
+$(LIB)fx3dlib: fx3dlib.asm
+	mkdir -p $(LIB)
+	$(AS) $(ASFLAGS) --listing $(OUT)fx3dlib.list fx3dlib.asm $(LIB)fx3dlib
 
-$(LIBDIR)fx3d: fx3dlib.asm
-	mkdir -p $(LIBDIR)
-	$(AS) $(ASFLAGS) --define "$(PLATFORM)" --include "$(INCLUDE);$(PACKAGEPATH)/fx3dlib/" fx3dlib.asm $(LIBDIR)fx3d
+$(INC)fx3dlib.inc: fx3dlib.inc
+	mkdir -p $(INC)
+	cp fx3dlib.inc $(INC)
 
-$(INCDIR)fx3dlib.inc:
-	mkdir -p $(INCDIR)
-	cp fx3dlib.inc $(INCDIR)fx3dlib.inc
-
-clean:
-	rm -rf $(OUTDIR)
-	rm -rf fx3dlib-1.0.0.pkg
-
-install: package
-	kpack -e -s fx3dlib-1.0.0.pkg $(PREFIX)
-
-.PHONY: all clean
+include .knightos/sdk.make
