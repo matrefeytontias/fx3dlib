@@ -1,6 +1,6 @@
 include .knightos/variables.make
 
-ALL_TARGETS:=$(LIB)fx3dlib $(INCLUDE)fx3dlib.inc
+ALL_TARGETS:=$(LIB)fx3dlib $(INC)fx3dlib.inc
 
 $(LIB)fx3dlib: fx3dlib.asm
 	mkdir -p $(LIB)
